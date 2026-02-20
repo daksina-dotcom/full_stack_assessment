@@ -1,35 +1,26 @@
 @import './base.css';
 
+/* 1. RESET BODY: Remove the flex and centering that breaks Vuetify */
+body {
+  margin: 0;
+  padding: 0;
+  display: block !important; /* Forces layout to be standard, not flex */
+  place-items: unset !important;
+  background-color: #f5f5f5; 
+}
+
+/* 2. RESET #APP: Ensure it takes full width */
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  width: 100%;
 }
 
-a,
-.green {
+/* 3. Global link styles */
+a {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+  color: #1867C0;
+  transition: 0.3s ease;
 }

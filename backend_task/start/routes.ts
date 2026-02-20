@@ -22,7 +22,7 @@ const UserController = ()=> import('#controllers/user_controller')
 router.post('/login/',[AuthController,'login']).as('login');
 router.get('/login/:id?',[AuthController,'login']).as('login.get');
 
-router.post('/signup/:id?',[AuthController,'signup']).as('signup');
+router.post('/signup/',[AuthController,'signup']).as('signup');
 router.get('/signup/:id?',[AuthController,'signup']).as('signup.get');
 
 router.group(()=>{
@@ -40,9 +40,9 @@ router.get('/tickets/download/:filename', async ({ params, response }) => {
 }).use(middleware.jwtAuth())
 
 router.group(() => {
-  router.get('/admin/analytics', [PaymentController, 'getAnalytics'])
+  router.get('/admin/analytics', [PaymentController, 'getAnalytics']).use(middleware.jwtAuth())
   router.post('/tickets/validate', [TicketController, 'validateTicket'])
-}).use(middleware.jwtAuth())
+})
 
 
 

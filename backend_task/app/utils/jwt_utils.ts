@@ -25,7 +25,7 @@ export default class JwtUtils {
     try {
       return jwt.verify(token, ACCESS_TOKEN_SECRET) as any
     } catch (error) {
-      return null
+      return error.message
     }
   }
 }

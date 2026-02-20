@@ -21,7 +21,7 @@ export default class AuthController {
             return response.unauthorized({message:"Enter the correct password!"})
         }
 
-        const jwtPayload = { userId: user.id, email: user.email }
+        const jwtPayload = { userId: user.id, email: user.email,role:user.role }
 
         const accessToken = JwtUtils.generateAccessToken(jwtPayload)
         console.log(accessToken)

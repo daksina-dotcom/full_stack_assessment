@@ -17,18 +17,21 @@ export default class EventController {
         }
     }
 
-    async createEvent({response,auth,request}:HttpContext){
+    async createEvent({response,auth_user,request}:HttpContext){
         try{
+            if (!auth_user) {
+            return response.unauthorized({ message: "Authentication required" })
+        }
 
-            const user = auth.getUserOrFail()
-            if(!user){
-                return response.forbidden("Not allowed ")
-            }
+        // 2. Authorization check: Ensure only admins or organisers can create events
+        if (auth_user.role !== 'admin' && auth_user.role !== 'organiser') {
+            return response.forbidden({ message: "You do not have permission to create events" })
+        }
             const eventData = request.only(['title','description','capacity','price','date'])
     
             const event = await Event.create({
                 ...eventData,
-                userId:user.id
+                userId:auth_user.id
     
             })
 

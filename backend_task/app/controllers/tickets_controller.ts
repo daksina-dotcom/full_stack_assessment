@@ -5,11 +5,15 @@ import Payment from '#models/payment'
 import { v4 as uuidv4 } from 'uuid'
 import PdfService from '#services/pdf_service'
 import path from 'node:path'
-import { validateTicketValidator } from '#validators/ticket'
 
 export default class TicketController {
-  async bookTicket({ auth, response, params }: HttpContext) {
-    const user = auth.getUserOrFail()
+  async bookTicket({ auth_user, response, params }: HttpContext) {
+    if (!auth_user) {
+      return response.unauthorized({ message: 'Please login first' })
+    }
+
+    // 2. Simply use the ID directly
+    const userId = auth_user.id
     const eventId = params.id
 
     try{
@@ -30,7 +34,7 @@ export default class TicketController {
     
         const ticket = await Ticket.create({
           ticketCode: uuidv4(),
-          userId: user.id,
+          userId: userId,
           eventId: event.id,
           paymentId: payment.id,
           status: 'valid'
@@ -53,8 +57,7 @@ export default class TicketController {
   }
 
   async validateTicket({request,auth,response}:HttpContext){
-    const { ticketCode } = await request.validateUsing(validateTicketValidator)
-    // const {ticketCode} = request.only(['ticketCode'])
+    const {ticketCode} = request.only(['ticketCode'])
     const user = auth.getUserOrFail()
 
     if(user.role!=='admin' && user.role!=='organiser'){
